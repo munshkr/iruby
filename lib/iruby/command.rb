@@ -13,12 +13,21 @@ module IRuby
 
       if @args.first == 'kernel'
         run_kernel
+      elsif @args.first == '--help' or @args.first == "-h" 
+        print_help
       else
         run_ipython
       end
     end
 
     private
+    def print_help
+      puts "
+Use #{$0} [--profile=PROFILENAME | profile create PROFILENAME]
+
+"      
+    end
+
 
     def run_kernel
       config_file, boot_file, working_dir = @args[1..-1]
