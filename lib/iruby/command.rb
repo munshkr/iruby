@@ -65,16 +65,16 @@ Use #{$0} [--profile=PROFILENAME | profile create PROFILENAME]
       unless File.directory?(profile_dir)
         puts "Creating profile directory #{profile_dir}"
         system("ipython profile create #{Shellwords.escape profile}")
-      end
 
-      kernel_cmd = []
-      kernel_cmd << ENV['BUNDLE_BIN_PATH'] << 'exec' if ENV['BUNDLE_BIN_PATH']
-      kernel_cmd += [File.expand_path($0), 'kernel', '{connection_file}']
-      kernel_cmd = "c.KernelManager.kernel_cmd = #{kernel_cmd.inspect}"
-      Dir[File.join(profile_dir, '*_config.py')].each do |path|
-        content = File.read(path)
-        content << kernel_cmd unless content.gsub!(/^c\.KernelManager\.kernel_cmd.*$/, kernel_cmd)
-        File.open(path, 'w') {|f| f.write(content) }
+        kernel_cmd = []
+        kernel_cmd << ENV['BUNDLE_BIN_PATH'] << 'exec' if ENV['BUNDLE_BIN_PATH']
+        kernel_cmd += [File.expand_path($0), 'kernel', '{connection_file}']
+        kernel_cmd = "c.KernelManager.kernel_cmd = #{kernel_cmd.inspect}"
+        Dir[File.join(profile_dir, '*_config.py')].each do |path|
+          content = File.read(path)
+          content << kernel_cmd unless content.gsub!(/^c\.KernelManager\.kernel_cmd.*$/, kernel_cmd)
+          File.open(path, 'w') {|f| f.write(content) }
+        end
       end
 
       static_dir = File.join(profile_dir, 'static')
